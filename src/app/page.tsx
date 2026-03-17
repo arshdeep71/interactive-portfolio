@@ -145,34 +145,34 @@ export default function Home() {
         {/* quick-question grid */}
         <div className="mt-5 flex flex-col items-center gap-2 w-full max-w-2xl">
           {/* Row 1: First 5 Cards */}
-          <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+          <div className="flex w-full flex-col gap-2 md:grid md:grid-cols-5">
             {questionConfig.slice(0, 5).map(({ key, color, icon: Icon }) => (
               <Button
                 key={key}
                 onClick={() => goToChat(questions[key])}
                 variant="outline"
-                className="border-border hover:bg-border/30 w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95 md:aspect-square"
+                className="border-border hover:bg-border/30 w-full cursor-pointer rounded-2xl border bg-white/30 h-16 md:h-20 shadow-none backdrop-blur-lg active:scale-95 md:aspect-square"
               >
-                <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
-                  <Icon size={22} strokeWidth={2} color={color} />
-                  <span className="text-[10px] font-medium md:text-xs">{key}</span>
+                <div className="flex h-full flex-col items-center justify-center gap-0.5 md:gap-1 text-gray-700">
+                  <Icon size={20} strokeWidth={2} color={color} className="md:h-[22px] md:w-[22px]" />
+                  <span className="text-[11px] font-medium md:text-xs">{key}</span>
                 </div>
               </Button>
             ))}
           </div>
 
           {/* Row 2: Remaining 2 Cards Centered */}
-          <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md md:w-1/2 md:max-w-xs">
+          <div className="flex w-full flex-col gap-2 md:grid md:w-1/2 md:max-w-xs md:grid-cols-2">
             {questionConfig.slice(5).map(({ key, color, icon: Icon }) => (
               <Button
                 key={key}
                 onClick={() => goToChat(questions[key])}
                 variant="outline"
-                className="border-border hover:bg-border/30 w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95 md:aspect-square"
+                className="border-border hover:bg-border/30 w-full cursor-pointer rounded-2xl border bg-white/30 h-16 md:h-20 shadow-none backdrop-blur-lg active:scale-95 md:aspect-square"
               >
-                <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
-                  <Icon size={22} strokeWidth={2} color={color} />
-                  <span className="text-[10px] font-medium md:text-xs">{key}</span>
+                <div className="flex h-full flex-col items-center justify-center gap-0.5 md:gap-1 text-gray-700">
+                  <Icon size={20} strokeWidth={2} color={color} className="md:h-[22px] md:w-[22px]" />
+                  <span className="text-[11px] font-medium md:text-xs">{key}</span>
                 </div>
               </Button>
             ))}
