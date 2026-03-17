@@ -143,20 +143,40 @@ export default function Home() {
         </form>
 
         {/* quick-question grid */}
-          <div className="mt-5 grid w-full max-w-3xl grid-cols-4 md:grid-cols-7 gap-2">
-          {questionConfig.map(({ key, color, icon: Icon }) => (
-            <Button
-              key={key}
-              onClick={() => goToChat(questions[key])}
-              variant="outline"
-              className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95"
-            >
-              <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
-                <Icon size={22} strokeWidth={2} color={color} />
-                <span className="text-[10px] md:text-xs font-medium">{key}</span>
-              </div>
-            </Button>
-          ))}
+        <div className="mt-5 flex flex-col items-center gap-2 w-full max-w-2xl">
+          {/* Row 1: First 5 Cards */}
+          <div className="grid w-full grid-cols-5 gap-2">
+            {questionConfig.slice(0, 5).map(({ key, color, icon: Icon }) => (
+              <Button
+                key={key}
+                onClick={() => goToChat(questions[key])}
+                variant="outline"
+                className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95"
+              >
+                <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
+                  <Icon size={22} strokeWidth={2} color={color} />
+                  <span className="text-[10px] md:text-xs font-medium">{key}</span>
+                </div>
+              </Button>
+            ))}
+          </div>
+
+          {/* Row 2: Remaining 2 Cards Centered */}
+          <div className="grid w-1/2 max-w-xs grid-cols-2 gap-2">
+            {questionConfig.slice(5).map(({ key, color, icon: Icon }) => (
+              <Button
+                key={key}
+                onClick={() => goToChat(questions[key])}
+                variant="outline"
+                className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95"
+              >
+                <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
+                  <Icon size={22} strokeWidth={2} color={color} />
+                  <span className="text-[10px] md:text-xs font-medium">{key}</span>
+                </div>
+              </Button>
+            ))}
+          </div>
         </div>
       </motion.div>
       
