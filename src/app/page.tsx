@@ -82,7 +82,7 @@ export default function Home() {
 
       {/* header */}
       <motion.div
-       className="z-1 mt-10 mb-30 flex flex-col items-center text-center md:mt-4 md:mb-6"
+       className="z-1 mt-10 mb-4 flex flex-col items-center text-center md:mt-4 md:mb-6"
         variants={topElementVariants}
         initial="hidden"
         animate="visible"
