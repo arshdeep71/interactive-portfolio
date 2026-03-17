@@ -15,7 +15,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Arshdeep Singh Portfolio',
   description:
-    'Interactive portfolio with an AI-powered Memoji that answers questions about me, my skills, and my experience',
+    'Interactive portfolio covering my skills and experience',
   keywords: [
     'Arshdeep Singh',
     'Portfolio',
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
     url: 'https://arshdeep-singh-portfolio.vercel.app',
     title: 'Arshdeep Singh Portfolio',
     description:
-      'Interactive portfolio with an AI-powered Memoji that answers questions about me',
+      'Interactive portfolio with local answering systems keeping tabs on my skills',
     siteName: 'Arshdeep Singh Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Arshdeep Singh Portfolio',
     description:
-      'Interactive portfolio with an AI-powered Memoji that answers questions about me',
+      'Interactive portfolio covering my skills and experience',
     creator: '@arshdeep71',
   },
   icons: {
@@ -76,13 +76,6 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         <link rel="icon" href="/favicon.svg" sizes="any" />
-        <Script
-          defer
-          data-website-id="68e067ba369b1b7f1f096056"
-          data-domain="toukoum.fr"
-          data-allow-localhost="true"
-          src="https://datafa.st/js/script.js"
-        ></Script>
       </head>
       <body
         className={cn(
