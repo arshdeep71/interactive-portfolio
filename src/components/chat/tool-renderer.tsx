@@ -1,21 +1,26 @@
+import AllProjects from "../projects/AllProjects";
+import Contact from "../contact";
+import Crazy from "../crazy";
+import InternshipCard from "../InternshipCard";
+import Resume from "../resume";
+import Skills from "../skills";
+import Sports from "../sport";
+import { Presentation } from "../presentation";
+import Achievements from "../achievements";
+
 // src/components/chat/tool-renderer.tsx
-import { Contact } from '../contact';
-import Crazy from '../crazy';
-import InternshipCard from '../InternshipCard';
-import { Presentation } from '../presentation';
-import AllProjects from '../projects/AllProjects';
-import Resume from '../resume';
-import Skills from '../skills';
-import Sports from '../sport';
 
 interface ToolRendererProps {
-  toolInvocations: any[];
+  toolInvocations: Array<{
+    toolCallId: string;
+    toolName: string;
+    result?: unknown;
+  }>;
   messageId: string;
 }
 
 export default function ToolRenderer({
   toolInvocations,
-  messageId,
 }: ToolRendererProps) {
   return (
     <div className="w-full transition-all duration-300">
@@ -41,6 +46,16 @@ export default function ToolRenderer({
                 className="w-full overflow-hidden rounded-lg"
               >
                 <Presentation />
+              </div>
+            );
+
+          case 'getAchievements':
+            return (
+              <div
+                key={toolCallId}
+                className="w-full overflow-hidden rounded-lg"
+              >
+                <Achievements />
               </div>
             );
 

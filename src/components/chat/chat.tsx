@@ -209,7 +209,7 @@ const Chat = () => {
     'What projects are you most proud of?': 'getProjects',
     'Show my skills': 'getSkills',
     'What are your skills?': 'getSkills',
-    'Show my achievements': 'getPresentation',
+    'Show my achievements': 'getAchievements',
     'How can someone contact me?': 'getContact',
     'How can I reach you?': 'getContact',
     'Can I see your resume?': 'getResume',
