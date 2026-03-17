@@ -2,7 +2,6 @@
 import FloatingChatBubble from "@/components/FloatingChatBubble";
 import FluidCursor from "@/components/FluidCursor";
 import Image from "next/image";
-import WelcomeModal from "@/components/welcome-modal";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -83,10 +82,6 @@ export default function Home() {
         initial="hidden"
         animate="visible"
       >
-        <div className="z-100">
-          <WelcomeModal />
-        </div>
-
         <h2 className="text-secondary-foreground mt-1 text-xl font-semibold md:text-2xl">
           Hey, I'm 👋
         </h2>
