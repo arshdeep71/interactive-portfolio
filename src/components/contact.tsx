@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Download } from 'lucide-react';
 
 export function Contact() {
   // Contact information
@@ -54,8 +54,8 @@ export function Contact() {
             </div>
           </div>
 
-          {/* Social Links */}
-          <div className="flex flex-wrap gap-x-6 gap-y-5 sm:gap-x-8">
+          {/* Social Links & CV */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-5 sm:gap-x-8 mt-4">
             {contactInfo.socials.map((social) => (
               <button
                 key={social.name}
@@ -66,6 +66,15 @@ export function Contact() {
                 {social.name}
               </button>
             ))}
+
+            <a
+              href="/ARSHcv.pdf"
+              download="Arshdeep_Singh_CV.pdf"
+              className="flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2 text-sm font-medium text-white transition-transform hover:bg-neutral-800 active:scale-95 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+            >
+              <Download className="h-4 w-4" />
+              Download CV
+            </a>
           </div>
         </div>
       </div>
