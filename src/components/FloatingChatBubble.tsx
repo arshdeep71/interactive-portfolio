@@ -5,7 +5,48 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input-landing";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { geminiService } from "@/lib/gemini-service";
+// Local responder text data for full-stack static fallback
+const localTextAnswers: Record<string, string> = {
+  'What are your passions?': "I am deeply passionate about full-stack web development, building scalable applications, and solving complex problems through code. I enjoy learning new frameworks and improving user experiences.",
+  'How did you get started in tech?': "My journey in tech began with a curiosity for how websites work, which led me to dive deep into HTML, CSS, and eventually complex backend systems like Node.js, Express, and MongoDB.",
+  'Where do you see yourself in 5 years?': "In 5 years, I envision myself as a Senior Developer or Tech Lead, driving innovative software architectures and continuing to build impactful, user-centric products.",
+  'What makes you a valuable team member?': "I bring a strong combination of technical skills (MERN stack, Python, C++) and soft skills like adaptability, problem-solving, and project management. I thrive in collaborative environments.",
+  'Why should I hire you?': "You should hire me because of my proven track record in building dynamic, full-stack applications like the Indian Startups Dashboard and Public Grievance Sorting System. I am dedicated, quick to adapt, and focused on delivering high-quality solutions.",
+  "What's your educational background?": "I am currently focused on computer science and programming, continually expanding my knowledge through academics and actively building real-world software projects.",
+  "What kind of project would make you say 'yes' immediately?": "I would immediately say 'yes' to any project that involves modern full-stack development (like React and Next.js), has a clear positive impact on users, and challenges me to solve complex problems.",
+  'Where are you located?': "I am based in Hoshiarpur, Punjab, India.",
+};
+
+const matchLocalText = (query: string): string => {
+  const q = query.trim();
+  const exact = localTextAnswers[q];
+  if (exact) return exact;
+
+  const lower = q.toLowerCase();
+  if (/(who are you|about|yourself|background|profile|bio|tell me|person|intro)/i.test(lower)) {
+    return "I am Arshdeep Singh, a Computer Science student at Lovely Professional University. I'm a passionate developer specializing in React, Node.js, and scaling applications.";
+  }
+  if (/(project|work|built|made|create|dashboard|system)/i.test(lower)) {
+    return "I have built projects like INNOSCOPE (Indian Startups Dashboard), SyllabiSync, and a Public Grievance Sorting system utilizing full-stack tools.";
+  }
+  if (/(skill|tech|stack|language)/i.test(lower)) {
+    return "My core stack includes PHP, C++, Python, JavaScript along with React, Node.js, Express, and Tailwind CSS.";
+  }
+  if (/(contact|email|reach|hire|phone)/i.test(lower)) {
+    return "You can reach me at arshdeepsingh07711@gmail.com or +91-7526954160. There's also a contact card layout with links available on the landing page!";
+  }
+  if (/(training|internship|course|lpu|summer)/i.test(lower)) {
+    return "I've completed static Summer Training courses involving Mastering C++ (OOP to Dynamic Programming) directly tied to CPE enhancements.";
+  }
+  if (/(certification|certificate|nptel|infosys|freecodecamp)/i.test(lower)) {
+    return "I hold whitelisted certifications in Cloud Computing (Nptel), Build Generative AI Apps (Infosys), and Responsive Web Design (freeCodeCamp).";
+  }
+  if (/(resume|cv)/i.test(lower)) {
+    return "You can download my CV inside the Contact Card panel layout attached directly on the landing page dashboard!";
+  }
+
+  return "I'm Arshdeep. Ask me about my skills, projects, background, or training and I'll fill you in!";
+};
 
 interface Message {
   id: string;
@@ -78,19 +119,7 @@ export default function FloatingChatBubble() {
     setIsLoading(true);
 
     try {
-      // Convert messages to the format expected by Gemini
-      const geminiMessages = messages.map((msg) => ({
-        role: msg.isUser ? "user" as const : "assistant" as const,
-        content: msg.content,
-      }));
-
-      // Add the new user message
-      geminiMessages.push({
-        role: "user" as const,
-        content: userMessage.content,
-      });
-
-      const response = await geminiService.generateResponse(geminiMessages);
+      const response = matchLocalText(userMessage.content);
       
       const aiMessage: Message = {
         id: Date.now().toString(),
