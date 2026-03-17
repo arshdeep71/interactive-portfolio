@@ -42,57 +42,28 @@ interface AvatarProps {
   isTalking: boolean;
 }
 
-// Dynamic import of Avatar component
-const Avatar = dynamic<AvatarProps>(
-  () =>
-    Promise.resolve(({ hasActiveTool, videoRef, isTalking }: AvatarProps) => {
-      const isIOS = () => {
-        const userAgent = window.navigator.userAgent;
-        const platform = window.navigator.platform;
-        const maxTouchPoints = window.navigator.maxTouchPoints || 0;
+// Static import of Avatar component
+const Avatar = ({ hasActiveTool }: AvatarProps) => {
+  return (
+    <div
+      className={`flex items-center justify-center rounded-full transition-all duration-300 overflow-hidden shadow-lg border-2 border-white dark:border-neutral-800 ${
+        hasActiveTool ? 'h-24 w-24' : 'h-32 w-32'
+      }`}
+    >
+      <div
+        className="relative h-full w-full cursor-pointer"
+        onClick={() => (window.location.href = '/')}
+      >
+        <img
+          src="/avatar_arsh.jpg"
+          alt="Avatar"
+          className="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  );
+};
 
-        //@ts-ignore
-        const isIOSByUA = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-        const isIOSByPlatform = /iPad|iPhone|iPod/.test(platform);
-        //@ts-ignore
-        const isIPadOS = platform === 'MacIntel' && maxTouchPoints > 1 && !window.MSStream;
-        const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
-
-        return isIOSByUA || isIOSByPlatform || isIPadOS || isSafari;
-      };
-
-      return (
-        <div
-          className={`flex items-center justify-center rounded-full transition-all duration-300 ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
-        >
-          <div
-            className="relative cursor-pointer"
-            onClick={() => (window.location.href = '/')}
-          >
-            {isIOS() ? (
-              <img
-                src="/landing-memojis.png"
-                alt="iOS avatar"
-                className="h-full w-full scale-[1.8] object-contain"
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                className="h-full w-full scale-[1.8] object-contain"
-                muted
-                playsInline
-                loop
-              >
-                <source src="/final_memojis.webm" type="video/webm" />
-                <source src="/final_memojis_ios.mp4" type="video/mp4" />
-              </video>
-            )}
-          </div>
-        </div>
-      );
-    }),
-  { ssr: false }
-);
 
 const MOTION_CONFIG = {
   initial: { opacity: 0, y: 20 },
