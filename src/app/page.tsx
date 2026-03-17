@@ -98,7 +98,7 @@ export default function Home() {
       {/* centre memoji */}
         <div className="relative z-10 mx-auto h-48 w-48 sm:h-56 sm:w-56 mt-6 mb-2 rounded-full overflow-hidden shadow-2xl border-4 border-white dark:border-neutral-800">
         <Image
-          src="/avatar_arsh.jpg"
+          src="/landing_avatar.png"
           alt="Arshdeep Singh"
           width={250}
           height={250}
