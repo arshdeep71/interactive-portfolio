@@ -1,13 +1,16 @@
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { Drawer } from "vaul";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@radix-ui/react-tooltip';
-import { motion } from 'framer-motion';
 import {
   BriefcaseBusiness,
   BriefcaseIcon,
@@ -17,55 +20,48 @@ import {
   CircleEllipsis,
   CodeIcon,
   GraduationCapIcon,
-  Laugh,
   Layers,
   MailIcon,
-  PartyPopper,
   Sparkles,
+  Trophy,
   UserRoundSearch,
   UserSearch,
 } from 'lucide-react';
-import { useState } from 'react';
-import { Drawer } from 'vaul';
 
 interface HelperBoostProps {
   submitQuery?: (query: string) => void;
   setInput?: (value: string) => void;
-  hasReachedLimit?: boolean;
 }
 
 const questions = {
-  Me: 'Who are you? I want to know more about you.',
-  Projects: 'What are your projects? What are you working on right now?',
-  Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Fun: "What the craziest thing you've ever done? (mb?) What are your hobbies? ",
-  Contact:
-    'How can I reach you? What kind of project would make you say "yes" immediately?',
+  Me: 'Who are you?',
+  Projects: 'Tell me about your projects',
+  Skills: 'Show my skills',
+  Achievements: 'Show my achievements',
+  Contact: 'How can someone contact me?',
 };
 
 const questionConfig = [
-  { key: 'Me', color: '#329696', icon: Laugh },
+  { key: 'Me', color: '#E65A5A', icon: UserSearch },
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
-  { key: 'Fun', color: '#B95F9D', icon: PartyPopper },
+  { key: 'Achievements', color: '#E6A817', icon: Trophy },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ];
 
 // Helper drawer data
 const specialQuestions = [
-  'Mountain Bike you said?? Show me!',
   'Who are you?',
   'Can I see your resume?',
   'What projects are you most proud of?',
   'What are your skills?',
   'How can I reach you?',
-  "What's the craziest thing you've ever done?",
 ];
 
 const questionsByCategory = [
   {
-    id: 'me',
-    name: 'Me',
+    id: 'about',
+    name: 'About Me',
     icon: UserSearch,
     questions: [
       'Who are you?',
@@ -81,7 +77,6 @@ const questionsByCategory = [
     questions: [
       'Can I see your resume?',
       'What makes you a valuable team member?',
-      'Where are you working now?',
       'Why should I hire you?',
       "What's your educational background?",
     ],
@@ -98,18 +93,6 @@ const questionsByCategory = [
     icon: GraduationCapIcon,
     questions: [
       'What are your skills?',
-      'How was your experience at École 42?',
-    ],
-  },
-  {
-    id: 'fun',
-    name: 'Fun',
-    icon: PartyPopper,
-    questions: [
-      'Mountain Bike you said?? Show me!',
-      "What's the craziest thing you've ever done?",
-      'Mac or PC?',
-      'What are you certain about that 90% get wrong?',
     ],
   },
   {
@@ -129,7 +112,7 @@ const AnimatedChevron = () => {
   return (
     <motion.div
       animate={{
-        y: [0, -4, 0], // Subtle up and down motion
+        y: [0, -4, 0],
       }}
       transition={{
         duration: 1.5,
@@ -147,7 +130,6 @@ const AnimatedChevron = () => {
 export default function HelperBoost({
   submitQuery,
   setInput,
-  hasReachedLimit = false,
 }: HelperBoostProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [open, setOpen] = useState(false);
@@ -209,14 +191,9 @@ export default function HelperBoost({
                 {questionConfig.map(({ key, color, icon: Icon }) => (
                   <Button
                     key={key}
-                    onClick={() => !hasReachedLimit && handleQuestionClick(key)}
+                    onClick={() => handleQuestionClick(key)}
                     variant="outline"
-                    className={`h-auto min-w-[100px] flex-shrink-0 rounded-xl border px-4 py-3 shadow-none backdrop-blur-sm transition-none ${
-                      hasReachedLimit 
-                        ? 'cursor-not-allowed border-gray-200 bg-gray-100 opacity-50' 
-                        : 'border-border hover:bg-border/30 cursor-pointer bg-white/80 active:scale-95'
-                    }`}
-                    disabled={hasReachedLimit}
+                    className="h-auto min-w-[100px] flex-shrink-0 rounded-xl border px-4 py-3 shadow-none backdrop-blur-sm transition-none border-border hover:bg-border/30 cursor-pointer bg-white/80 active:scale-95"
                   >
                     <div className="flex items-center gap-3 text-gray-700">
                       <Icon size={18} strokeWidth={2} color={color} />
@@ -229,23 +206,17 @@ export default function HelperBoost({
                 <TooltipProvider>
                   <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
-                      <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center" disabled={hasReachedLimit}>
+                      <Drawer.Trigger className="group relative flex flex-shrink-0 items-center justify-center">
                         <motion.div
-                          className={`flex h-auto items-center space-x-1 rounded-xl border px-4 py-3 text-sm backdrop-blur-sm transition-all duration-200 ${
-                            hasReachedLimit 
-                              ? 'cursor-not-allowed border-gray-200 bg-gray-100 opacity-50' 
-                              : 'hover:bg-border/30 cursor-pointer border-neutral-200 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900'
-                          }`}
-                          whileHover={!hasReachedLimit ? { scale: 1 } : {}}
-                          whileTap={!hasReachedLimit ? { scale: 0.98 } : {}}
+                          className="flex h-auto items-center space-x-1 rounded-xl border px-4 py-3 text-sm backdrop-blur-sm transition-all duration-200 hover:bg-border/30 cursor-pointer border-neutral-200 bg-white/80 dark:border-neutral-800 dark:bg-neutral-900"
+                          whileHover={{ scale: 1 }}
+                          whileTap={{ scale: 0.98 }}
                         >
                           <div className="flex items-center gap-3 text-gray-700">
                             <CircleEllipsis
                               className="h-[20px] w-[18px]"
-                              //style={{ color: '#3B82F6' }}
                               strokeWidth={2}
                             />
-                            {/*<span className="text-sm font-medium">More</span>*/}
                           </div>
                         </motion.div>
                       </Drawer.Trigger>

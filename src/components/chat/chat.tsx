@@ -1,27 +1,23 @@
-'use client';
-import { useChat } from '@ai-sdk/react';
-import { AnimatePresence, motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { toast } from 'sonner';
+"use client";
+import ChatBottombar from "@/components/chat/chat-bottombar";
+import ChatLanding from "@/components/chat/chat-landing";
+import ChatMessageContent from "@/components/chat/chat-message-content";
+import HelperBoost from "./HelperBoost";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import WelcomeModal from "@/components/welcome-modal";
+import dynamic from "next/dynamic";
+import { useChat } from "@ai-sdk/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Info } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { SimplifiedChatView } from "@/components/chat/simple-chat-view";
 
 // Component imports
-import ChatBottombar from '@/components/chat/chat-bottombar';
-import ChatLanding from '@/components/chat/chat-landing';
-import ChatMessageContent from '@/components/chat/chat-message-content';
-import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
 import {
   ChatBubble,
   ChatBubbleMessage,
 } from '@/components/ui/chat/chat-bubble';
-import WelcomeModal from '@/components/welcome-modal';
-import { Info } from 'lucide-react';
-import HelperBoost from './HelperBoost';
-import { FastfolioCTA } from '@/components/fastfolio-cta';
-import { FastfolioPopup } from '@/components/fastfolio-popup';
-import { PoweredByFastfolio } from '@/components/powered-by-fastfolio';
-import { FastfolioTracking } from '@/lib/fastfolio-tracking';
 
 // ClientOnly component for client-side rendering
 //@ts-ignore
@@ -50,33 +46,21 @@ interface AvatarProps {
 const Avatar = dynamic<AvatarProps>(
   () =>
     Promise.resolve(({ hasActiveTool, videoRef, isTalking }: AvatarProps) => {
-      // This function will only execute on the client
       const isIOS = () => {
-        // Multiple detection methods
         const userAgent = window.navigator.userAgent;
         const platform = window.navigator.platform;
         const maxTouchPoints = window.navigator.maxTouchPoints || 0;
 
-        // UserAgent-based check
-        const isIOSByUA =
-          //@ts-ignore
-          /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-
-        // Platform-based check
+        //@ts-ignore
+        const isIOSByUA = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
         const isIOSByPlatform = /iPad|iPhone|iPod/.test(platform);
-
-        // iPad Pro check
-        const isIPadOS =
-          //@ts-ignore
-          platform === 'MacIntel' && maxTouchPoints > 1 && !window.MSStream;
-
-        // Safari check
+        //@ts-ignore
+        const isIPadOS = platform === 'MacIntel' && maxTouchPoints > 1 && !window.MSStream;
         const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
 
         return isIOSByUA || isIOSByPlatform || isIPadOS || isSafari;
       };
 
-      // Conditional rendering based on detection
       return (
         <div
           className={`flex items-center justify-center rounded-full transition-all duration-300 ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
@@ -127,9 +111,6 @@ const Chat = () => {
   const [autoSubmitted, setAutoSubmitted] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
-  const [showFastfolioPopup, setShowFastfolioPopup] = useState(false);
-  const [hasReachedLimit, setHasReachedLimit] = useState(false);
-  const [, forceUpdate] = useState({});
 
   const {
     messages,
@@ -153,17 +134,6 @@ const Chat = () => {
             console.error('Failed to play video:', error);
           });
         }
-        
-        // Don't increment here since we already increment on submit
-        // Just check if we should show popup
-        if (FastfolioTracking.shouldShowPopup()) {
-          setTimeout(() => {
-            setShowFastfolioPopup(true);
-            if (!FastfolioTracking.hasReachedLimit()) {
-              FastfolioTracking.markPopupShown();
-            }
-          }, 2000);
-        }
       }
     },
     onFinish: () => {
@@ -180,7 +150,9 @@ const Chat = () => {
         videoRef.current.pause();
       }
       console.error('Chat error:', error.message, error.cause);
-      toast.error(`Error: ${error.message}`);
+      
+      // The user wants ONLY the 'Out of credits' message for all API limits
+      toast.error("Sorry, we are out of credits. We'll be back soon! Sorry for the inconvenience.");
     },
     onToolCall: (tool) => {
       const toolName = tool.toolCall.toolName;
@@ -230,30 +202,74 @@ const Chat = () => {
       )
   );
 
+  const localQueries: Record<string, string> = {
+    'Who are you?': 'getPresentation',
+    'Tell me about your projects': 'getProjects',
+    'Show my projects': 'getProjects',
+    'What projects are you most proud of?': 'getProjects',
+    'Show my skills': 'getSkills',
+    'What are your skills?': 'getSkills',
+    'Show my achievements': 'getPresentation',
+    'How can someone contact me?': 'getContact',
+    'How can I reach you?': 'getContact',
+    'Can I see your resume?': 'getResume',
+  };
+
   //@ts-ignore
   const submitQuery = (query) => {
-    // Check rate limit before submitting
-    if (FastfolioTracking.hasReachedLimit()) {
-      setHasReachedLimit(true);
-      setShowFastfolioPopup(true);
+    if (!query.trim() || isToolInProgress) return;
+
+    const localToolName = localQueries[query];
+
+    // HYBRID HANDLER: Intercept predefined queries locally
+    if (localToolName) {
+      setInput(query); // Automatically fill the search box for visual feedback
+
+      const userMessage = { id: Date.now().toString(), role: 'user', content: query };
+      
+      //@ts-ignore
+      setMessages((prev) => [...prev, userMessage]);
+      
+      setLoadingSubmit(true);
+      setIsTalking(true);
+
+      setTimeout(() => {
+        setLoadingSubmit(false);
+        setInput(''); // clear input box
+
+        const mockToolId = `call_${Date.now()}`;
+        const mockAssistantMsg = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: `[FALLBACK_TOOL:${localToolName}] Loading from local data...`,
+          parts: [
+            {
+              type: 'text',
+              text: `[FALLBACK_TOOL:${localToolName}] Loading from local data...`
+            },
+            {
+              type: 'tool-invocation',
+              toolInvocation: {
+                state: 'result',
+                toolCallId: mockToolId,
+                toolName: localToolName,
+                args: {},
+                result: `Successfully loaded local data for ${localToolName}`
+              }
+            }
+          ]
+        };
+        //@ts-ignore
+        setMessages((prev) => [...prev, mockAssistantMsg]);
+        setIsTalking(false);
+      }, 800);
+
       return;
     }
-    
-    if (!query.trim() || isToolInProgress) return;
-    
-    // Increment message count
-    FastfolioTracking.incrementMessageCount();
-    
-    // Force re-render to update remaining messages counter
-    forceUpdate({});
-    
-    // Check if limit reached after increment
-    if (FastfolioTracking.hasReachedLimit()) {
-      setHasReachedLimit(true);
-      setShowFastfolioPopup(true);
-    }
-    
+
+    // API HANDLER: Send dynamic custom questions to Gemini
     setLoadingSubmit(true);
+    setInput('');
     append({
       role: 'user',
       content: query,
@@ -268,12 +284,6 @@ const Chat = () => {
       videoRef.current.pause();
     }
 
-    // Check rate limit on mount
-    if (FastfolioTracking.hasReachedLimit()) {
-      setHasReachedLimit(true);
-      setShowFastfolioPopup(true);
-    }
-    
     if (initialQuery && !autoSubmitted) {
       setAutoSubmitted(true);
       setInput('');
@@ -296,14 +306,6 @@ const Chat = () => {
   //@ts-ignore
   const onSubmit = (e) => {
     e.preventDefault();
-    
-    // Check rate limit
-    if (FastfolioTracking.hasReachedLimit()) {
-      setHasReachedLimit(true);
-      setShowFastfolioPopup(true);
-      return;
-    }
-    
     if (!input.trim() || isToolInProgress) return;
     submitQuery(input);
     setInput('');
@@ -327,8 +329,6 @@ const Chat = () => {
 
   return (
     <div className="relative h-screen overflow-hidden">
-      <FastfolioCTA />
-      <FastfolioPopup open={showFastfolioPopup} onOpenChange={setShowFastfolioPopup} hasReachedLimit={hasReachedLimit} />
       <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
         <WelcomeModal
           trigger={
@@ -396,7 +396,7 @@ const Chat = () => {
                 className="flex min-h-full items-center justify-center"
                 {...MOTION_CONFIG}
               >
-                <ChatLanding submitQuery={submitQuery} hasReachedLimit={hasReachedLimit} />
+                <ChatLanding submitQuery={submitQuery} />
               </motion.div>
             ) : currentAIMessage ? (
               <div className="pb-4">
@@ -426,18 +426,16 @@ const Chat = () => {
         {/* Fixed Bottom Bar */}
         <div className="sticky bottom-0 bg-white px-2 pt-3 md:px-0 md:pb-4">
           <div className="relative flex flex-col items-center gap-3">
-            <HelperBoost submitQuery={submitQuery} setInput={setInput} hasReachedLimit={hasReachedLimit} />
+            <HelperBoost submitQuery={submitQuery} setInput={setInput} />
             <ChatBottombar
-              input={hasReachedLimit ? "You've reached your message limit." : input}
-              handleInputChange={hasReachedLimit ? () => {} : handleInputChange}
+              input={input}
+              handleInputChange={handleInputChange}
               handleSubmit={onSubmit}
               isLoading={isLoading}
               stop={handleStop}
-              isToolInProgress={isToolInProgress || hasReachedLimit}
-              disabled={hasReachedLimit}
+              isToolInProgress={isToolInProgress}
             />
           </div>
-          <PoweredByFastfolio />
         </div>
       </div>
     </div>

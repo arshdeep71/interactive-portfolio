@@ -1,19 +1,18 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import React from 'react';
+"use client";
+import Image from "next/image";
+import React from "react";
+import { motion } from "framer-motion";
 
 export function Presentation() {
   // Personal information
   const profile = {
-    name: 'Raphael Giraud',
-    age: '21 years old',
-    location: 'Paris, France',
+    name: 'Arshdeep Singh',
+    age: '20 years old',
+    location: 'Punjab, India',
     // Add a newline character after the emoji
     description:
-      "Hey 👋\nI'm Raph also known as Toukoum. I'm a developer specializing in AI at 42 Paris. I'm working at LightOn AI in Paris. I'm passionate about AI, tech, Entrepreneurship and SaaS tech.",
-    src: '/profil-raph.png',
+      "Hey 👋\nI'm Arshdeep. I'm a Computer Science student at Lovely Professional University. I'm a passionate developer specializing in MERN stack, React, and building engaging web applications. I love solving problems and creating impactful tools.",
+    src: '/avatar_arsh.jpg',
     fallbackSrc:
       'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3',
   };
@@ -103,7 +102,7 @@ export function Presentation() {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="mt-4 flex flex-wrap gap-2"
           >
-            {['AI', 'Developer', '42 Paris', 'Sport', 'SaaS Builder'].map(
+            {['React', 'Node.js', 'C++', 'Tailwind', 'MongoDB'].map(
               (tag) => (
                 <span
                   key={tag}
