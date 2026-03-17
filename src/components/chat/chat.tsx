@@ -266,11 +266,11 @@ const Chat = () => {
         const mockAssistantMsg = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: `[FALLBACK_TOOL:${localToolName}] Loading from local data...`,
+          content: `[FALLBACK_TOOL:${localToolName}]`,
           parts: [
             {
               type: 'text',
-              text: `[FALLBACK_TOOL:${localToolName}] Loading from local data...`
+              text: `[FALLBACK_TOOL:${localToolName}]`
             },
             {
               type: 'tool-invocation',
