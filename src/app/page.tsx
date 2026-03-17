@@ -61,23 +61,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Preload chat assets in the background
-    if (typeof window !== 'undefined') {
-      const img = new window.Image();
-      img.src = '/landing-memojis.png';
-
-      const linkWebm = document.createElement('link');
-      linkWebm.rel = 'preload';
-      linkWebm.as = 'video';
-      linkWebm.href = '/final_memojis.webm';
-      document.head.appendChild(linkWebm);
-
-      const linkMp4 = document.createElement('link');
-      linkMp4.rel = 'prefetch';
-      linkMp4.as = 'video';
-      linkMp4.href = '/final_memojis_ios.mp4';
-      document.head.appendChild(linkMp4);
-    }
+    // No preloads needed since we migrated away from video memoji assets.
   }, []);
 
   return (
@@ -112,14 +96,14 @@ export default function Home() {
       </motion.div>
 
       {/* centre memoji */}
-        <div className="relative z-10 mx-auto h-56 w-56 sm:h-64 sm:w-64 mt-4">
+        <div className="relative z-10 mx-auto h-48 w-48 sm:h-56 sm:w-56 mt-6 mb-2 rounded-full overflow-hidden shadow-2xl border-4 border-white dark:border-neutral-800">
         <Image
-          src="/avatar-landing.png"
-          alt="Hero memoji"
+          src="/avatar_arsh.jpg"
+          alt="Arshdeep Singh"
           width={250}
           height={250}
           priority
-          className="mx-auto scale-[1.25] object-contain"
+          className="h-full w-full object-cover"
         />
       </div>
 
