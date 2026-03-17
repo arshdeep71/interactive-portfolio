@@ -1,10 +1,10 @@
-import { Toaster } from '@/components/ui/sonner';
-import { cn } from '@/lib/utils';
-import { Analytics } from '@vercel/analytics/react';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import Script from 'next/script';
-import './globals.css';
+import "./globals.css";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
 // Load Inter font for non-Apple devices
 const inter = Inter({
@@ -13,11 +13,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Toukoum Portfolio',
+  title: 'Arshdeep Singh Portfolio',
   description:
     'Interactive portfolio with an AI-powered Memoji that answers questions about me, my skills, and my experience',
   keywords: [
-    'Toukoum',
+    'Arshdeep Singh',
     'Portfolio',
     'Developer',
     'AI',
@@ -30,26 +30,26 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: 'Toukoum',
-      url: 'https://toukoum.fr',
+      name: 'Arshdeep Singh',
+      url: 'https://arshdeep-singh-portfolio.vercel.app',
     },
   ],
-  creator: 'Toukoum',
+  creator: 'Arshdeep Singh',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://toukoum.fr',
-    title: 'Toukoum Portfolio',
+    url: 'https://arshdeep-singh-portfolio.vercel.app',
+    title: 'Arshdeep Singh Portfolio',
     description:
       'Interactive portfolio with an AI-powered Memoji that answers questions about me',
-    siteName: 'Toukoum Portfolio',
+    siteName: 'Arshdeep Singh Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Toukoum Portfolio',
+    title: 'Arshdeep Singh Portfolio',
     description:
       'Interactive portfolio with an AI-powered Memoji that answers questions about me',
-    creator: '@toukoum',
+    creator: '@arshdeep71',
   },
   icons: {
     icon: [

@@ -76,6 +76,41 @@ export default function ChatMessageContent({
 }: ChatMessageContentProps) {
   // Only handle text parts
   const renderContent = () => {
+    // If no parts array exists (which happens with our locally mocked hybrid messages), just render the raw string
+    if (!message.parts || message.parts.length === 0) {
+      if (!message.content) return null;
+      
+      const contentParts = message.content.split('```');
+      return (
+        <div className="w-full space-y-4">
+          {contentParts.map((content, i) =>
+            i % 2 === 0 ? (
+              <div key={`text-${i}`} className="prose dark:prose-invert w-full">
+                <Markdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    p: ({ children }) => <p className="break-words whitespace-pre-wrap">{children}</p>,
+                    ul: ({ children }) => <ul className="my-4 list-disc pl-6">{children}</ul>,
+                    ol: ({ children }) => <ol className="my-4 list-decimal pl-6">{children}</ol>,
+                    li: ({ children }) => <li className="my-1">{children}</li>,
+                    a: ({ href, children }) => (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        {children}
+                      </a>
+                    ),
+                  }}
+                >
+                  {content}
+                </Markdown>
+              </div>
+            ) : (
+              <CodeBlock key={`code-${i}`} content={content} />
+            )
+          )}
+        </div>
+      );
+    }
+
     return message.parts?.map((part, partIndex) => {
       if (part.type !== 'text' || !part.text) return null;
 

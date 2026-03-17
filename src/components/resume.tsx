@@ -1,20 +1,18 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowDownToLine, Download, Eye, File } from 'lucide-react';
-import Image from 'next/image';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { Download } from "lucide-react";
 
 export function Resume() {
   // Resume details
   const resumeDetails = {
-    title: "Raphael's Resume",
-    description: 'Full Stack Developer • AI Specialist',
+    title: "Arshdeep's Resume",
+    description: 'Computer Science Student • Full Stack Developer',
     fileType: 'PDF',
-    lastUpdated: 'March 2025',
-    fileSize: '0.5 MB',
-    previewImageSrc: '/resume_giraud_preview.png',
-    downloadUrl: '/resume_giraud.pdf',
+    lastUpdated: 'March 2026',
+    fileSize: '0.1 MB',
+    previewImageSrc: '/resume_arshdeep_preview.png',
+    downloadUrl: '/resume_arshdeep.pdf',
   };
 
   const handleDownload = () => {

@@ -1,36 +1,35 @@
-'use client';
+"use client";
+import FloatingChatBubble from "@/components/FloatingChatBubble";
+import FluidCursor from "@/components/FluidCursor";
+import Image from "next/image";
+import WelcomeModal from "@/components/welcome-modal";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 
-import { FastfolioCTA } from '@/components/fastfolio-cta';
-import FluidCursor from '@/components/FluidCursor';
-import { Button } from '@/components/ui/button';
-import WelcomeModal from '@/components/welcome-modal';
-import { motion } from 'framer-motion';
 import {
   ArrowRight,
   BriefcaseBusiness,
-  Laugh,
   Layers,
-  PartyPopper,
+  Trophy,
   UserRoundSearch,
 } from 'lucide-react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
 
 /* ---------- quick-question data ---------- */
 const questions = {
-  Me: 'Who are you? I want to know more about you.',
-  Projects: 'What are your projects? What are you working on right now?',
-  Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Fun: 'What’s the craziest thing you’ve ever done? What are your hobbies?',
-  Contact: 'How can I contact you?',
+  Me: 'Tell me about yourself',
+  Projects: 'Show my projects',
+  Skills: 'Show my skills',
+  Achievements: 'Show my achievements',
+  Contact: 'How can someone contact me?',
 } as const;
 
 const questionConfig = [
-  { key: 'Me', color: '#329696', icon: Laugh },
+  { key: 'Me', color: '#2563EB', icon: UserRoundSearch },
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
-  { key: 'Fun', color: '#B95F9D', icon: PartyPopper },
+  { key: 'Achievements', color: '#E6A817', icon: Trophy },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ] as const;
 
@@ -49,7 +48,7 @@ export default function Home() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'ease', duration: 0.8 },
+      transition: { duration: 0.8 },
     },
   };
   const bottomElementVariants = {
@@ -57,27 +56,28 @@ export default function Home() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: 'ease', duration: 0.8, delay: 0.2 },
+      transition: { duration: 0.8, delay: 0.2 },
     },
   };
 
   useEffect(() => {
-    // Précharger les assets du chat en arrière-plan
-    const img = new window.Image();
-    img.src = '/landing-memojis.png';
+    // Preload chat assets in the background
+    if (typeof window !== 'undefined') {
+      const img = new window.Image();
+      img.src = '/landing-memojis.png';
 
-    // Précharger les vidéos aussi
-    const linkWebm = document.createElement('link');
-    linkWebm.rel = 'preload'; // Note: prefetch au lieu de preload
-    linkWebm.as = 'video';
-    linkWebm.href = '/final_memojis.webm';
-    document.head.appendChild(linkWebm);
+      const linkWebm = document.createElement('link');
+      linkWebm.rel = 'preload';
+      linkWebm.as = 'video';
+      linkWebm.href = '/final_memojis.webm';
+      document.head.appendChild(linkWebm);
 
-    const linkMp4 = document.createElement('link');
-    linkMp4.rel = 'prefetch';
-    linkMp4.as = 'video';
-    linkMp4.href = '/final_memojis_ios.mp4';
-    document.head.appendChild(linkMp4);
+      const linkMp4 = document.createElement('link');
+      linkMp4.rel = 'prefetch';
+      linkMp4.as = 'video';
+      linkMp4.href = '/final_memojis_ios.mp4';
+      document.head.appendChild(linkMp4);
+    }
   }, []);
 
   return (
@@ -88,15 +88,13 @@ export default function Home() {
           className="hidden bg-gradient-to-b from-neutral-500/10 to-neutral-500/0 bg-clip-text text-[10rem] leading-none font-black text-transparent select-none sm:block lg:text-[16rem]"
           style={{ marginBottom: '-2.5rem' }}
         >
-          Toukoum
+          Portfolio
         </div>
       </div>
 
-      <FastfolioCTA/>
-
       {/* header */}
       <motion.div
-        className="z-1 mt-24 mb-8 flex flex-col items-center text-center md:mt-4 md:mb-12"
+       className="z-1 mt-10 mb-30 flex flex-col items-center text-center md:mt-4 md:mb-6"
         variants={topElementVariants}
         initial="hidden"
         animate="visible"
@@ -106,22 +104,22 @@ export default function Home() {
         </div>
 
         <h2 className="text-secondary-foreground mt-1 text-xl font-semibold md:text-2xl">
-          Hey, I'm Aaaaby 👋
+          Hey, I'm 👋
         </h2>
         <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
-          AI Engineer
+          Arshdeep Singh
         </h1>
       </motion.div>
 
       {/* centre memoji */}
-      <div className="relative z-10 h-52 w-48 overflow-hidden sm:h-72 sm:w-72">
+        <div className="relative z-10 mx-auto h-56 w-56 sm:h-64 sm:w-64 mt-4">
         <Image
-          src="/landing-memojis.png"
+          src="/avatar-landing.png"
           alt="Hero memoji"
-          width={2000}
-          height={2000}
+          width={250}
+          height={250}
           priority
-          className="translate-y-14 scale-[2] object-cover"
+          className="mx-auto scale-[1.25] object-contain"
         />
       </div>
 
@@ -130,7 +128,7 @@ export default function Home() {
         variants={bottomElementVariants}
         initial="hidden"
         animate="visible"
-        className="z-10 mt-4 flex w-full flex-col items-center justify-center md:px-0"
+      className="z-10 mt-2 flex w-full flex-col items-center justify-center md:px-0"
       >
         {/* free-form question */}
         <form
@@ -155,19 +153,19 @@ export default function Home() {
               aria-label="Submit question"
               className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-70 dark:bg-blue-600 dark:hover:bg-blue-700"
             >
-              <ArrowRight  className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5" />
             </button>
           </div>
         </form>
 
         {/* quick-question grid */}
-        <div className="mt-4 grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          <div className="mt-5 grid w-full max-w-3xl grid-cols-5 gap-2">
           {questionConfig.map(({ key, color, icon: Icon }) => (
             <Button
               key={key}
               onClick={() => goToChat(questions[key])}
               variant="outline"
-              className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 py-8 shadow-none backdrop-blur-lg active:scale-95 md:p-10"
+className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95"
             >
               <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
                 <Icon size={22} strokeWidth={2} color={color} />
@@ -177,7 +175,9 @@ export default function Home() {
           ))}
         </div>
       </motion.div>
+      
       <FluidCursor />
+      <FloatingChatBubble />
     </div>
   );
 }

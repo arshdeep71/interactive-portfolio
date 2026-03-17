@@ -50,10 +50,30 @@ export function SimplifiedChatView({
       )
       .filter(Boolean) || [];
 
-  // Only display the first tool (if any)
-  const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : [];
+  // Check if this is our custom API failure fallback message OR our custom mock response
+  const isApiFallback = message.content.includes("API is currently not fetching") || 
+                        message.content.includes("API is currently experiencing issues") ||
+                        message.content.includes("[FALLBACK_TOOL:");
+  
+  let fallbackToolInvocations: any[] = [];
+  
+  if (isApiFallback) {
+    const fallbackMatch = message.content.match(/\[FALLBACK_TOOL:([a-zA-Z0-9]+)\]/);
+    if (fallbackMatch && fallbackMatch[1]) {
+      fallbackToolInvocations = [{
+        toolCallId: `fallback-${Date.now()}`,
+        toolName: fallbackMatch[1]
+      }];
+    }
+  }
 
-  const hasTextContent = message.content.trim().length > 0;
+  // Clean the text to remove the fallback tag before rendering
+  const cleanContent = message.content.replace(/\[FALLBACK_TOOL:[a-zA-Z0-9]+\]\s*/g, '');
+
+  // Only display the first tool (if any)
+  const currentTool = toolInvocations.length > 0 ? [toolInvocations[0]] : fallbackToolInvocations;
+
+  const hasTextContent = cleanContent.trim().length > 0;
   const hasTools = currentTool.length > 0;
 
   console.log('currentTool', currentTool);
@@ -78,7 +98,16 @@ export function SimplifiedChatView({
             <ChatBubble variant="received" className="w-full">
               <ChatBubbleMessage className="w-full">
                 <ChatMessageContent
-                  message={message}
+                  message={{ 
+                    ...message, 
+                    content: cleanContent,
+                    // The ChatMessageContent component loops over `message.parts` if they exist
+                    parts: message.parts ? message.parts.map(p => 
+                      p.type === 'text' 
+                        ? { ...p, text: p.text.replace(/\[FALLBACK_TOOL:[a-zA-Z0-9]+\]\s*/g, '') } 
+                        : p
+                    ) : []
+                  }}
                   isLast={true}
                   isLoading={isLoading}
                   reload={reload}

@@ -1,6 +1,10 @@
-'use client';
+"use client";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { X } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,11 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { motion } from 'framer-motion';
-import { X } from 'lucide-react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation'; // Importation correcte pour Next.js 13+
-import { useState } from 'react';
 
 // Added a trigger prop to accept custom triggers
 interface WelcomeModalProps {
@@ -21,7 +20,6 @@ interface WelcomeModalProps {
 
 export default function WelcomeModal({ trigger }: WelcomeModalProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter(); // Initialisation du router avec useRouter
 
   // Default trigger is the logo
   const defaultTrigger = (
