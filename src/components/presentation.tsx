@@ -27,7 +27,7 @@ export function Presentation() {
       y: 0,
       transition: { duration: 0.6, ease: 'easeOut' },
     },
-  };
+  } as const;
 
   // Animation for the entire paragraph rather than word-by-word
   const paragraphAnimation = {
@@ -41,7 +41,7 @@ export function Presentation() {
         delay: 0.2,
       },
     },
-  };
+  } as const;
 
   return (
     <div className="mx-auto w-full max-w-5xl py-6 font-sans">

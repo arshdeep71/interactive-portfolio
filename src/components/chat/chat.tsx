@@ -73,7 +73,7 @@ const MOTION_CONFIG = {
     duration: 0.3,
     ease: 'easeOut',
   },
-};
+} as const;
 
 const Chat = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
