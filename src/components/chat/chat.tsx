@@ -215,24 +215,49 @@ const Chat = () => {
     'Can I see your resume?': 'getResume',
   };
 
+  const matchLocalTool = (query: string): string | null => {
+    // 1) First check exact map (for the quick buttons)
+    if (localQueries[query]) return localQueries[query];
+
+    // 2) Then check 100+ patterns dynamically
+    const q = query.toLowerCase();
+
+    // Presentation / Me / About matches
+    if (/(who are you|about|yourself|background|presentation|me\b|profile|bio|tell me|person|intro)/i.test(q)) return 'getPresentation';
+    
+    // Projects matches
+    if (/(project|work|portfolio|built|made|create|did you do|experience|app|dashboard|system)/i.test(q)) return 'getProjects';
+    
+    // Skills matches
+    if (/(skill|tech|stack|language|framework|know|tool|mongodb|react|node|c\+\+|php|python|java|html|css|expert|good at)/i.test(q)) return 'getSkills';
+    
+    // Achievements matches
+    if (/(achievement|patent|award|accomplish|proud|win|won|success|trophy)/i.test(q)) return 'getAchievements';
+    
+    // Contact / Reach matches
+    if (/(contact|email|reach|hire|phone|mobile|linkedin|github|touch|social|message|call|connect)/i.test(q)) return 'getContact';
+    
+    // Resume matches
+    if (/(resume|cv|document|file)/i.test(q)) return 'getResume';
+
+    return null;
+  };
+
   //@ts-ignore
   const submitQuery = (query) => {
     if (!query.trim() || isToolInProgress) return;
 
-    const localToolName = localQueries[query];
+    const localToolName = matchLocalTool(query);
 
-    // HYBRID HANDLER: Intercept predefined queries locally
+    setInput(query); // Automatically fill the search box for visual feedback
+    const userMessage = { id: Date.now().toString(), role: 'user', content: query };
+    //@ts-ignore
+    setMessages((prev) => [...prev, userMessage]);
+    
+    setLoadingSubmit(true);
+    setIsTalking(true);
+
     if (localToolName) {
-      setInput(query); // Automatically fill the search box for visual feedback
-
-      const userMessage = { id: Date.now().toString(), role: 'user', content: query };
-      
-      //@ts-ignore
-      setMessages((prev) => [...prev, userMessage]);
-      
-      setLoadingSubmit(true);
-      setIsTalking(true);
-
       setTimeout(() => {
         setLoadingSubmit(false);
         setInput(''); // clear input box
@@ -263,17 +288,20 @@ const Chat = () => {
         setMessages((prev) => [...prev, mockAssistantMsg]);
         setIsTalking(false);
       }, 800);
-
-      return;
+    } else {
+      setTimeout(() => {
+        setLoadingSubmit(false);
+        setInput(''); // clear input box
+        const errMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: "We are srry for the inconvenince, this feature is still under update. For now, please click the quick question cards to check my Profile, Projects, Skills, Achievements, and Contact info!",
+        };
+        //@ts-ignore
+        setMessages((prev) => [...prev, errMessage]);
+        setIsTalking(false);
+      }, 1000);
     }
-
-    // API HANDLER: Send dynamic custom questions to Gemini
-    setLoadingSubmit(true);
-    setInput('');
-    append({
-      role: 'user',
-      content: query,
-    });
   };
 
   useEffect(() => {
