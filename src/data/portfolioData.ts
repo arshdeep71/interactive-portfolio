@@ -42,5 +42,45 @@ export const portfolioData = {
     linkedin: "www.linkedin.com/in/arshdeep71",
     github: "github.com/arshdeep71",
     mobile: "+91-7526954160"
-  }
+  },
+  training: [
+    {
+      institution: "Lovely Professional University — Centre for Professional Enhancement (CPE)",
+      date: "Jun 25 – Jul 25",
+      title: "Mastering C++: From Object-Oriented Programming to Dynamic Programming",
+      points: [
+        "Applied core OOP principles—inheritance, polymorphism, and abstraction—while building structured C++ programs.",
+        "Enhanced logic development through recursion practice, pattern-based challenges, and systematic breakdown of coding problems.",
+        "Completed hands-on programming tasks and mini-projects, reinforcing concepts through real-world style exercises."
+      ],
+      certificateId: "408254",
+      link: "https://files.lpu.in/umsweb/skilldevcourse/SkillDevelopmentCertificates/12313587_905_20_08_2025.pdf?_gl=1*158fp1h*_gcl_au*MTEzNjM5MDMwMy4xNzY0MDYwNzEx*_ga*MTU5ODI2ODY2MS4xNzY0MDU1NzE2*_ga_WKLQCVXZ47*czE3NjQwNjA3MTEkbzEkZzEkdDE3NjQwNjA3NDgkajIzJGwwJGgw"
+    }
+  ],
+  certifications: [
+    {
+      title: "Cloud Computing",
+      issuer: "Nptel",
+      date: "Oct 25",
+      link: "https://archive.nptel.ac.in/content/noc/NOC25/SEM2/Ecertificates/106/noc25-cs107/Course/NPTEL25CS107S135870000910385009.pdf"
+    },
+    {
+      title: "Build Generative AI Apps",
+      issuer: "Infosys",
+      date: "Sep 25",
+      link: "https://drive.google.com/file/d/1avSG30Yd9KEh9UzxUCeD-uwP3ZaPd2iw/view?usp=drive_link"
+    },
+    {
+      title: "Computational Theory",
+      issuer: "Infosys",
+      date: "Sep 25",
+      link: "https://drive.google.com/file/d/1avSG30Yd9KEh9UzxUCeD-uwP3ZaPd2iw/view"
+    },
+    {
+      title: "Responsive Web Design",
+      issuer: "freeCodeCamp",
+      date: "Dec 23",
+      link: "https://www.freecodecamp.org/certification/fcce0c67fcf-2ec4-418d-8c41-385be29ec72b/responsive-web-design"
+    }
+  ]
 };

@@ -13,14 +13,17 @@ import {
   Layers,
   Trophy,
   UserRoundSearch,
+  BookOpen,
+  Award,
 } from 'lucide-react';
 
-/* ---------- quick-question data ---------- */
 const questions = {
   Me: 'Tell me about yourself',
   Projects: 'Show my projects',
   Skills: 'Show my skills',
   Achievements: 'Show my achievements',
+  Training: 'Show my training',
+  Certifications: 'Show my certifications',
   Contact: 'How can someone contact me?',
 } as const;
 
@@ -29,6 +32,8 @@ const questionConfig = [
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
   { key: 'Achievements', color: '#E6A817', icon: Trophy },
+  { key: 'Training', color: '#F76D57', icon: BookOpen },
+  { key: 'Certifications', color: '#0EA5E9', icon: Award },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ] as const;
 
@@ -138,17 +143,17 @@ export default function Home() {
         </form>
 
         {/* quick-question grid */}
-          <div className="mt-5 grid w-full max-w-3xl grid-cols-5 gap-2">
+          <div className="mt-5 grid w-full max-w-3xl grid-cols-4 md:grid-cols-7 gap-2">
           {questionConfig.map(({ key, color, icon: Icon }) => (
             <Button
               key={key}
               onClick={() => goToChat(questions[key])}
               variant="outline"
-className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95"
+              className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 h-20 shadow-none backdrop-blur-lg active:scale-95"
             >
               <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
                 <Icon size={22} strokeWidth={2} color={color} />
-                <span className="text-xs font-medium sm:text-sm">{key}</span>
+                <span className="text-[10px] md:text-xs font-medium">{key}</span>
               </div>
             </Button>
           ))}

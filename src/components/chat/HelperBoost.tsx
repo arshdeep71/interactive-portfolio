@@ -18,6 +18,8 @@ import {
   ChevronRight,
   ChevronUp,
   CircleEllipsis,
+  BookOpen,
+  Award,
   CodeIcon,
   GraduationCapIcon,
   Layers,
@@ -38,6 +40,8 @@ const questions = {
   Projects: 'Tell me about your projects',
   Skills: 'Show my skills',
   Achievements: 'Show my achievements',
+  Training: 'Show my training',
+  Certifications: 'Show my certifications',
   Contact: 'How can someone contact me?',
 };
 
@@ -46,6 +50,8 @@ const questionConfig = [
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
   { key: 'Achievements', color: '#E6A817', icon: Trophy },
+  { key: 'Training', color: '#F76D57', icon: BookOpen },
+  { key: 'Certifications', color: '#0EA5E9', icon: Award },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
 ];
 
@@ -55,6 +61,8 @@ const specialQuestions = [
   'Can I see your resume?',
   'What projects are you most proud of?',
   'What are your skills?',
+  'Show my training',
+  'Show my certifications',
   'How can I reach you?',
 ];
 
@@ -89,10 +97,12 @@ const questionsByCategory = [
   },
   {
     id: 'skills',
-    name: 'Skills',
+    name: 'Skills & Achievements',
     icon: GraduationCapIcon,
     questions: [
       'What are your skills?',
+      'Show my training',
+      'Show my certifications',
     ],
   },
   {

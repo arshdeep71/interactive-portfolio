@@ -7,6 +7,8 @@ import Skills from "../skills";
 import Sports from "../sport";
 import { Presentation } from "../presentation";
 import Achievements from "../achievements";
+import Training from "../training";
+import Certifications from "../certifications";
 
 // src/components/chat/tool-renderer.tsx
 
@@ -56,6 +58,26 @@ export default function ToolRenderer({
                 className="w-full overflow-hidden rounded-lg"
               >
                 <Achievements />
+              </div>
+            );
+
+          case 'getTraining':
+            return (
+              <div
+                key={toolCallId}
+                className="w-full overflow-hidden rounded-lg"
+              >
+                <Training />
+              </div>
+            );
+
+          case 'getCertifications':
+            return (
+              <div
+                key={toolCallId}
+                className="w-full overflow-hidden rounded-lg"
+              >
+                <Certifications />
               </div>
             );
 

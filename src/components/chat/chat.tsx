@@ -181,6 +181,8 @@ const Chat = () => {
     'Show my skills': 'getSkills',
     'What are your skills?': 'getSkills',
     'Show my achievements': 'getAchievements',
+    'Show my training': 'getTraining',
+    'Show my certifications': 'getCertifications',
     'How can someone contact me?': 'getContact',
     'How can I reach you?': 'getContact',
     'Can I see your resume?': 'getResume',
@@ -205,6 +207,12 @@ const Chat = () => {
     // Achievements matches
     if (/(achievement|patent|award|accomplish|proud|win|won|success|trophy)/i.test(q)) return 'getAchievements';
     
+    // Training matches
+    if (/(training|internship|intern|course|lpu|summer|mastering c\+\+|cpe|enhancement)/i.test(q)) return 'getTraining';
+    
+    // Certifications matches
+    if (/(certification|certificate|nptel|infosys|freecodecamp|cloud computing|generative ai)/i.test(q)) return 'getCertifications';
+
     // Contact / Reach matches
     if (/(contact|email|reach|hire|phone|mobile|linkedin|github|touch|social|message|call|connect)/i.test(q)) return 'getContact';
     
