@@ -2,6 +2,9 @@
 import Image from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
+import { portfolioData } from "@/data/portfolioData";
+import { Trophy } from "lucide-react";
+
 
 export function Presentation() {
   // Personal information
@@ -113,6 +116,29 @@ export function Presentation() {
               )
             )}
           </motion.div>
+
+          {/* Achievements */}
+          {portfolioData.achievements && portfolioData.achievements.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="mt-8 rounded-2xl bg-secondary/50 p-6 dark:bg-secondary/20"
+            >
+              <div className="mb-4 flex items-center gap-3">
+                <Trophy className="h-5 w-5 text-yellow-500" />
+                <h3 className="text-lg font-semibold text-foreground">Key Achievement</h3>
+              </div>
+              <ul className="space-y-3">
+                {portfolioData.achievements.map((achievement, i) => (
+                  <li key={i} className="flex items-start text-muted-foreground leading-relaxed">
+                    <span className="mr-2 mt-1.5 h-1.5 w-1.5 rounded-full bg-yellow-500 flex-shrink-0"></span>
+                    <span>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>

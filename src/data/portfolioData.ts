@@ -35,7 +35,7 @@ export const portfolioData = {
     softSkills: ["Problem-Solving", "Team Player", "Project Management", "Adaptability"]
   },
   achievements: [
-    "Co-inventor of filed patent 'A Smart Classroom Management System'."
+    'Co-inventor of a filed patent titled "A Smart Classroom Management System" under the Indian Patent Office. Application Number: 202511060527.'
   ],
   contact: {
     email: "arshdeepsingh07711@gmail.com",
