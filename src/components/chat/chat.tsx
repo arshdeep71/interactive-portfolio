@@ -214,6 +214,17 @@ const Chat = () => {
     return null;
   };
 
+  const localTextAnswers: Record<string, string> = {
+    'What are your passions?': "I am deeply passionate about full-stack web development, building scalable applications, and solving complex problems through code. I enjoy learning new frameworks and improving user experiences.",
+    'How did you get started in tech?': "My journey in tech began with a curiosity for how websites work, which led me to dive deep into HTML, CSS, and eventually complex backend systems like Node.js, Express, and MongoDB.",
+    'Where do you see yourself in 5 years?': "In 5 years, I envision myself as a Senior Developer or Tech Lead, driving innovative software architectures and continuing to build impactful, user-centric products.",
+    'What makes you a valuable team member?': "I bring a strong combination of technical skills (MERN stack, Python, C++) and soft skills like adaptability, problem-solving, and project management. I thrive in collaborative environments.",
+    'Why should I hire you?': "You should hire me because of my proven track record in building dynamic, full-stack applications like the Indian Startups Dashboard and Public Grievance Sorting System. I am dedicated, quick to adapt, and focused on delivering high-quality solutions.",
+    "What's your educational background?": "I am currently focused on computer science and programming, continually expanding my knowledge through academics and actively building real-world software projects.",
+    "What kind of project would make you say 'yes' immediately?": "I would immediately say 'yes' to any project that involves modern full-stack development (like React and Next.js), has a clear positive impact on users, and challenges me to solve complex problems.",
+    'Where are you located?': "I am based in Hoshiarpur, Punjab, India.",
+  };
+
   //@ts-ignore
   const submitQuery = (query) => {
     if (!query.trim() || isToolInProgress) return;
@@ -228,7 +239,22 @@ const Chat = () => {
     setLoadingSubmit(true);
     setIsTalking(true);
 
-    if (localToolName) {
+    const exactTextAnswer = localTextAnswers[query];
+
+    if (exactTextAnswer) {
+      setTimeout(() => {
+        setLoadingSubmit(false);
+        setInput(''); // clear input box
+        const textMsg = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: exactTextAnswer,
+        };
+        //@ts-ignore
+        setMessages((prev) => [...prev, textMsg]);
+        setIsTalking(false);
+      }, 800);
+    } else if (localToolName) {
       setTimeout(() => {
         setLoadingSubmit(false);
         setInput(''); // clear input box
