@@ -111,7 +111,7 @@ export const Carousel = ({
     >
       <div className="relative w-full">
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none]"
+          className="flex w-full flex-col md:flex-row md:overflow-x-scroll md:overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none]"
           ref={carouselRef}
           onScroll={checkScrollability}
         >
@@ -123,7 +123,7 @@ export const Carousel = ({
 
           <div
             className={cn(
-              'flex flex-row justify-start gap-4',
+              'flex flex-col md:flex-row justify-start items-center md:items-start gap-4',
               'mx-auto max-w-7xl' // remove max-w-4xl if you want the carousel to span the full width of its container
             )}
           >
@@ -144,29 +144,31 @@ export const Carousel = ({
                 }}
                 viewport={{ once: true }}
                 key={'card' + index}
-                className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
+                className="w-full md:w-auto rounded-3xl md:last:pr-[33%]"
               >
                 {item}
               </motion.div>
             ))}
           </div>
         </div>
-        <div className="mr-10 flex justify-end gap-2 md:mr-20">
-          <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
-            onClick={scrollLeft}
-            disabled={!canScrollLeft}
-          >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
-          </button>
-          <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
-            onClick={scrollRight}
-            disabled={!canScrollRight}
-          >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
-          </button>
-        </div>
+        {items.length > 3 && (
+          <div className="mr-10 hidden md:flex justify-end gap-2 md:mr-20">
+            <button
+              className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+              onClick={scrollLeft}
+              disabled={!canScrollLeft}
+            >
+              <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            </button>
+            <button
+              className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+              onClick={scrollRight}
+              disabled={!canScrollRight}
+            >
+              <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            </button>
+          </div>
+        )}
       </div>
     </CarouselContext.Provider>
   );
