@@ -8,7 +8,7 @@ import WelcomeModal from "@/components/welcome-modal";
 import dynamic from "next/dynamic";
 import { useChat } from "@ai-sdk/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Info } from "lucide-react";
+import { Info, ArrowLeft } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { SimplifiedChatView } from "@/components/chat/simple-chat-view";
@@ -35,35 +35,7 @@ const ClientOnly = ({ children }) => {
   return <>{children}</>;
 };
 
-// Define Avatar component props interface
-interface AvatarProps {
-  hasActiveTool: boolean;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
-  isTalking: boolean;
-}
-
-// Static import of Avatar component
-const Avatar = ({ hasActiveTool }: AvatarProps) => {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-full transition-all duration-300 overflow-hidden shadow-lg border-2 border-white dark:border-neutral-800 ${
-        hasActiveTool ? 'h-24 w-24' : 'h-32 w-32'
-      }`}
-    >
-      <div
-        className="relative h-full w-full cursor-pointer"
-        onClick={() => (window.location.href = '/')}
-      >
-        <img
-          src="/avatar_arsh.jpg"
-          alt="Avatar"
-          className="h-full w-full object-cover"
-        />
-      </div>
-    </div>
-  );
-};
-
+// Removed old Avatar rendering logic completely per request
 
 const MOTION_CONFIG = {
   initial: { opacity: 0, y: 20 },
@@ -357,11 +329,23 @@ const Chat = () => {
   const isEmptyState =
     !currentAIMessage && !latestUserMessage && !loadingSubmit;
 
-  // Calculate header height based on hasActiveTool
-  const headerHeight = hasActiveTool ? 100 : 180;
+  // Calculate standard fixed padding without massive image overlap overhead
+  const headerHeight = hasActiveTool ? 80 : 120;
 
   return (
     <div className="relative h-screen overflow-hidden">
+      {/* Top Left Back Arrow */}
+      <div className="absolute top-6 left-4 z-51 flex items-center gap-2 md:left-8">
+        <button
+          onClick={() => (window.location.href = '/')}
+          className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white/50 px-3 py-2 text-neutral-600 shadow-sm backdrop-blur-md transition-all hover:bg-white/80 dark:border-neutral-800 dark:bg-neutral-900/50 dark:text-neutral-300 dark:hover:bg-neutral-900"
+          aria-label="Back to Home"
+        >
+          <ArrowLeft className="h-5 w-5" />
+          <span className="hidden text-sm font-medium sm:block">Back</span>
+        </button>
+      </div>
+
       <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
         <WelcomeModal
           trigger={
@@ -372,9 +356,9 @@ const Chat = () => {
         />
       </div>
 
-      {/* Fixed Avatar Header with Gradient */}
+      {/* Fixed Layout Gradient Padding Structure */}
       <div
-        className="fixed top-0 right-0 left-0 z-50"
+        className="fixed top-0 right-0 left-0 z-50 pointer-events-none"
         style={{
           background:
             'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
@@ -383,16 +367,6 @@ const Chat = () => {
         <div
           className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}
         >
-          <div className="flex justify-center">
-            <ClientOnly>
-              <Avatar
-                hasActiveTool={hasActiveTool}
-                videoRef={videoRef}
-                isTalking={isTalking}
-              />
-            </ClientOnly>
-          </div>
-
           <AnimatePresence>
             {latestUserMessage && !currentAIMessage && (
               <motion.div
