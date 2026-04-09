@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // Load Inter font for non-Apple devices
 const inter = Inter({
@@ -79,12 +80,19 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          'bg-background min-h-screen font-sans antialiased',
+          'bg-background min-h-screen font-sans antialiased text-foreground',
           inter.variable
         )}
       >
-        <main className="flex min-h-screen flex-col">{children}</main>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="flex min-h-screen flex-col">{children}</main>
+          <Toaster />
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
