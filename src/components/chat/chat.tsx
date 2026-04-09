@@ -12,7 +12,6 @@ import { Info, ArrowLeft } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { SimplifiedChatView } from "@/components/chat/simple-chat-view";
-import { ModeToggle } from "@/components/mode-toggle";
 
 // Component imports
 import {
@@ -347,8 +346,7 @@ const Chat = () => {
         </button>
       </div>
 
-      <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-2 md:flex-row">
-        <ModeToggle />
+      <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
         <WelcomeModal
           trigger={
             <div className="hover:bg-accent cursor-pointer rounded-2xl px-3 py-1.5">
